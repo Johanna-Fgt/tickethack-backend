@@ -32,14 +32,11 @@ router.post('/', (req, res) => {
 
 /* GET /products */
 router.get('/', (req, res) => {
-	Product.find().then(data => {
-		
-		if (data) {
-			res.json({ result: true, product: data});
-		  } else { 
-			res.json({ result: false});
-		  }
+	Product.find({ paid: false }).then((data) =>
+		data.length > 0
+			? res.json({ result: true, products: data })
+			: res.json({ result: false })
+	);
   });
-}); 
 
 module.exports = router;
