@@ -32,13 +32,47 @@ router.post('/', (req, res) => {
 
 /* GET /products */
 router.get('/', (req, res) => {
-	Product.find().then((data) => {
-		if (data) {
-			res.json({ result: true, products: data });
-		} else {
-			res.json({ result: false });
-		}
-	});
+	Product.find({ paid: false }).then((data) =>
+		data.length > 0
+			? res.json({ result: true, products: data })
+			: res.json({ result: false })
+	);
+});
+
+/* GET /products/paid */
+router.get('/paid', (req, res) => {
+	Product.find({ paid: true }).then((data) =>
+		data.length > 0
+			? res.json({ result: true, products: data })
+			: res.json({ result: false })
+	);
+});
+
+/* DELETE /products/delete */
+router.delete('/delete', (req, res) => {
+	const { id } = req.body;
+	Product.deleteOne({ _id: id }).then((deletedProduct) =>
+		deletedProduct.deletedCount > 0
+			? res.json({ result: true })
+			: res.json({ result: false, error: 'Product not found' })
+	);
+});
+
+/* UPDATE /products/paid */
+router.put('/paid', (req, res) => {
+	const { ids } = req.body;
+
+	// Update every product paid status to true
+	for (let i = 0; i < ids.length; i++) {
+		Product.updateOne({ _id: ids[i] }, { paid: true });
+	}
+
+	// If all products were modified
+	Product.find({ paid: true }).then((data) =>
+		data.length === ids.length
+			? res.json({ result: true })
+			: res.json({ result: false, error: 'All products not updated' })
+	);
 });
 
 module.exports = router;
