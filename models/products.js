@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const productSchema = mongoose.Schema({
 	departure: String,
 	arrival: String,
-	hour: Date,
+	date: Date,
 	price: Number,
 	paid: Boolean,
 });
