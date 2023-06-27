@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
 	Product.find().then(data => {
 		
 		if (data) {
-			res.json({ result: true, Product: data});
+			res.json({ result: true, product: data});
 		  } else { 
 			res.json({ result: false});
 		  }
