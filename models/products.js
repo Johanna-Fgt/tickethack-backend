@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const cartSchema = mongoose.Schema({
+const productSchema = mongoose.Schema({
 	departure: String,
 	arrival: String,
 	hour: Date,
@@ -8,6 +8,6 @@ const cartSchema = mongoose.Schema({
 	paid: Boolean,
 });
 
-const Cart = mongoose.model('carts', cartSchema);
+const Product = mongoose.model('products', productSchema);
 
-module.exports = Cart;
+module.exports = Product;

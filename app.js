@@ -6,7 +6,7 @@ var logger = require('morgan');
 require('./models/connection');
 
 var tripRouter = require('./routes/trips');
-var cartRouter = require('./routes/cart');
+var productRouter = require('./routes/products');
 
 var app = express();
 const cors = require('cors');
@@ -19,6 +19,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/trips', tripRouter);
-app.use('/cart', cartRouter);
+app.use('/products', productRouter);
 
 module.exports = app;
