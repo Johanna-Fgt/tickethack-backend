@@ -30,4 +30,16 @@ router.post('/', (req, res) => {
 	});
 });
 
+/* GET /products */
+router.get('/', (req, res) => {
+	Product.find().then(data => {
+		
+		if (data) {
+			res.json({ result: true, Product: data});
+		  } else { 
+			res.json({ result: false});
+		  }
+  });
+}); 
+
 module.exports = router;
