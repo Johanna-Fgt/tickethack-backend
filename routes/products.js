@@ -31,6 +31,7 @@ router.post('/', (req, res) => {
 });
 
 /* GET /products */
+
 router.get('/', (req, res) => {
 	Product.find({ paid: false }).then((data) =>
 		data.length > 0
