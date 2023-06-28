@@ -64,15 +64,16 @@ router.put('/paid', (req, res) => {
 
 	// Update every product paid status to true
 	for (let i = 0; i < ids.length; i++) {
-		Product.updateOne({ _id: ids[i] }, { paid: true });
+		Product.updateOne({ _id: ids[i] }, { paid: true }).then(
+			(data) =>
+				// data.modifiedCount > 0
+				res.json({ result: true })
+			// : res.json({ result: false, error: 'All products not updated' })
+		);
 	}
 
 	// If all products were modified
-	Product.find({ paid: true }).then((data) =>
-		data.length === ids.length
-			? res.json({ result: true })
-			: res.json({ result: false, error: 'All products not updated' })
-	);
+	// Product.find({ paid: true })
 });
 
 module.exports = router;
