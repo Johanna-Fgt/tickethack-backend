@@ -6,7 +6,7 @@ const { checkBody } = require('../modules/utils');
 /* POST Trip */
 router.post('/', (req, res) => {
 	const { departure, arrival, date } = req.body;
-	console.log(date);
+
 	// Check if body's data are valid
 	let reqIsValid = checkBody(req.body, ['departure', 'arrival', 'date']);
 
@@ -16,8 +16,11 @@ router.post('/', (req, res) => {
 		//Find the corresponding elements in db
 		Trip.find({ departure, arrival }).then((d) => {
 			if (d) {
+				// Reture trips on same day only but later
+
+				console.log(new Date(date).getDay());
 				let trips = d.filter(
-					(el) => new Date(el.date).getTime() > new Date(date).getTime()
+					(el) => new Date(el.date).getTime() === new Date(date).getTime()
 				);
 				res.json({ result: true, trips });
 			} else {
