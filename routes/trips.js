@@ -14,8 +14,11 @@ router.post('/', (req, res) => {
 		res.json({ result: false, error: 'Missing or empty fields' });
 	} else {
 		//Find the corresponding elements in db
-		Trip.find({ departure, arrival }).then((d) => {
-			if (d) {
+		Trip.find({
+			departure: { $regex: new RegExp(departure, 'i') },
+			arrival: { $regex: new RegExp(arrival, 'i') },
+		}).then((d) => {
+			if (d.length) {
 				// Reture trips on same day only
 				let trips = d.filter(
 					(el) =>
@@ -23,6 +26,7 @@ router.post('/', (req, res) => {
 						new Date(el.date).getTime() <
 							new Date(date).setDate(new Date(date).getDate() + 1)
 				);
+
 				res.json({ result: true, trips });
 			} else {
 				// Trip not found
