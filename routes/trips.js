@@ -17,9 +17,14 @@ router.post('/', (req, res) => {
 		Trip.find({ departure, arrival }).then((d) => {
 			if (d) {
 				// Reture trips on same day only but later
+				// console.log(new Date(date).setDate(new Date(date).getDate() + 1));
 				let trips = d.filter(
-					(el) => new Date(el.date).getTime() > new Date(date).getTime()
+					(el) =>
+						new Date(el.date).getTime() > new Date(date).getTime() &&
+						new Date(el.date).getTime() <
+							new Date(date).setDate(new Date(date).getDate() + 1)
 				);
+				console.log(trips);
 				res.json({ result: true, trips });
 			} else {
 				// Trip not found
