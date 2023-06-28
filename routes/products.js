@@ -60,21 +60,20 @@ router.delete('/delete', (req, res) => {
 });
 
 /* UPDATE /products/paid */
-router.put('/paid', (req, res) => {
+router.put('/paid', async (req, res) => {
 	const { ids } = req.body;
 
 	// Update every product paid status to true
 	for (let i = 0; i < ids.length; i++) {
-		Product.updateOne({ _id: ids[i] }, { paid: true }).then(
-			(data) =>
-				// data.modifiedCount > 0
-				res.json({ result: true })
-			// : res.json({ result: false, error: 'All products not updated' })
-		);
+		Product.updateOne({ _id: ids[i] }, { paid: true }).then((data) => {
+			if (data.modifiedCount === 0)
+				return res.json({
+					result: false,
+					error: `product ${ids[i]} not updated`,
+				});
+		});
 	}
-
-	// If all products were modified
-	// Product.find({ paid: true })
+	res.json({ result: true });
 });
 
 module.exports = router;
